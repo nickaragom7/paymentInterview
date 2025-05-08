@@ -1,0 +1,11 @@
+de Sign up to PaymentsOS and set up a testing account and a Business Unit.  https://control.paymentsos.com/signup
+
+Choose the Mock provider and run the requests for the following API calls:
+     A. Create Payment
+     For the payment that you created at step A:
+     B. Create Authorize 640$
+     C. Create Capture of 355$
+     D. Create refund of 120$
+
+3.Please provide the refund response
+

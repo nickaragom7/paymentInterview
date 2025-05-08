@@ -1,0 +1,6 @@
+ Hello PayU,
+We have tried to contact you for few days without a response,
+We are getting 503 errors for some of our requests, we are now losing traffic and transactions and have no idea what is going on. This is urgent and we need a response ASAP:
+We need someone now to explain what is happening and the next steps you will take to fix this situation.
+ Regards,
+ Amex
