@@ -1,0 +1,9 @@
++ Considering the tables I got, I take into account that every transaction record will be linked to the tarjeta_credito.
+
++ Having 2 tables, I take into account the advise before starting: 
+(Hint: You need to join the tarjeta_credito and transaccion tables.)
+Therefore I can think on a command with: 
+JOIN
+
+
++ 
