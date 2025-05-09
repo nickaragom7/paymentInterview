@@ -1,9 +1,102 @@
-+ Considering the tables I got, I take into account that every transaction record will be linked to the tarjeta_credito.
++ Considering the tables I got, I take into account that every transaction record will be linked to the tarjeta_credito. In tarjeta_credito I can find more static information,while transaction records will be many more and with more dynamic information, still all transactions will be link to a unique tarjeta_credito, mainly through tarjeta_credito_id, which is the primary key, plus extra verification data.
 
 + Having 2 tables, I take into account the advise before starting: 
 (Hint: You need to join the tarjeta_credito and transaccion tables.)
 Therefore I can think on a command with: 
 JOIN
 
++ SQL command requires following variables to be create the desired transactional requirement:
+usuario_id, fecha_creacion, fecha_operacion, orden_id, transaccion_id, state, tipo, medio_pago, codigo_respuesta, codigo_autorizacion, codigo_trazabilidad, fuente, metodo_integracion, pagador_email, numero_visible, banco_emisor, tipo_tarjeta, procesar_sin_cvv2,
 
-+ 
++ In transactions table, can be found half of the requested parameters:
+usuario_id, fecha_creacion, fecha_operacion, orden_id, transaccion_id, state, tipo, medio_pago, codigo_respuesta, codigo_autorizacion, codigo_trazabilidad,
+
++ In credit card table, the other half:
+numero_visible, banco_emisor, tipo_tarjeta, procesar_sin_cvv2,
+
++ However it can be seen that we are missing 3 variables:  fuente, metodo_integracion, pagador_email, are missing for the report. We can assume this will be provided on a later stage.
+
++ transaccion table will use t as an alias, to keep it clean, then we start selecting relevant fields from that table:
+SELECT 
+    t.usuario_id
+    t.fecha_creacion
+    t.fecha_operacion
+    t.orden_id
+    t.transaccion_id
+    t.state
+    t.tipo
+    t.medio_pago
+    t.codigo_respuesta
+    t.codigo_autorizacion
+    t.codigo_trazabilidad
+FROM 
+    transaccion t
+
++ We can addition tarjeta_credito with an alis using JOIN on this stage:
+JOIN 
+    tarjeta_credito tc ON t.tarjeta_credito_id = tc.tarjeta_credito_id
+
+With this we are ordering with SQL, tarjeta_credito will have a tc alias, same as with transaccion we had t, and please, join the transctions with the credit card having the same credit card id.
+
++ Nonethless, we are missing half of the entries for tarjeta_credito, therefore we complete the command and take the opportunity to sum up everything I got:
+
+SELECT 
+    t.usuario_id
+    t.fecha_creacion
+    t.fecha_operacion
+    t.orden_id
+    t.transaccion_id
+    t.state
+    t.tipo
+    t.medio_pago
+    t.codigo_respuesta
+    t.codigo_autorizacion
+    t.codigo_trazabilidad
+    tc.numero_visible,
+    tc.banco_emisor,
+    tc.tipo_tarjeta,
+    tc.procesar_sin_cvv2
+
+    t.fuente, 
+    t.metodo_integracion,
+    t.pagador_email,
+FROM 
+    transaccion t
+JOIN 
+    tarjeta_credito tc ON t.tarjeta_credito_id = tc.tarjeta_credito_id
+
+As well, fields that are nowhere to be seen, are included within the query, just to don't discard them.
+
++ To organize it much better, we can order it by date, as it's a financial report, and having most recent transactions at the top would be convenient, just by adding: 
+
+ORDER BY 
+    t.fecha_operacion DESC
+
+
++ As with this, SQL command to generate a transacional report has been generated:
+
+SELECT 
+    t.usuario_id,
+    t.fecha_creacion,
+    t.fecha_operacion,
+    t.orden_id,
+    t.transaccion_id,
+    t.state,
+    t.tipo,
+    t.medio_pago,
+    t.codigo_respuesta,
+    t.codigo_autorizacion,
+    t.codigo_trazabilidad,
+    tc.numero_visible,
+    tc.banco_emisor,
+    tc.tipo_tarjeta,
+    tc.procesar_sin_cvv2
+    t.fuente, 
+    t.metodo_integracion,
+    t.pagador_email
+FROM 
+    transaccion t
+JOIN 
+    tarjeta_credito tc ON t.tarjeta_credito_id = tc.tarjeta_credito_id
+ORDER BY 
+    t.fecha_operacion DESC
